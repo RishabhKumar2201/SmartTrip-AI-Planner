@@ -1,0 +1,54 @@
+/*
+ * Install the Generative AI SDK
+ *
+ * $ npm install @google/generative-ai
+ *
+ * See the getting started guide for more information
+ * https://ai.google.dev/gemini-api/docs/get-started/node
+ */
+
+const {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} = require("@google/generative-ai");
+
+const apiKey = process.env.EXPO_PUBLIC_GEMINI_API_KEY;
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+});
+
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 8192,
+  responseMimeType: "application/json",
+};
+
+export const chatSession = model.startChat({
+  generationConfig,
+  history: [
+    {
+      role: "user",
+      parts: [
+        {
+          text: "Generate Travel Plan for Location : Delhi, India, for 4 Days and 3 Nights for Family with Moderate budget with a Flight details, Flight Price with Booking url, Hotels options list with HotelName, Hotel address, Price, hotel image url, geo coordinates, rating, descriptions and Places to visit nearby with placeName, Place Details, Place Image Url, Geo Coordinates, ticket Pricing, Time t travel each of the location for 4 days and 3 night with each day plan with best time to visit in JSON format\n",
+        },
+      ],
+    },
+    {
+      role: "model",
+      parts: [
+        {
+          text: '```json\n{\n  "trip": {\n    "destination": "Delhi, India",\n    "duration": "4 days and 3 nights",\n    "budget": "Moderate",\n    "flight": {\n      "details": "Roundtrip flight from Mumbai (BOM) to Delhi (DEL) on IndiGo",\n      "price": "₹4,000",\n      "booking_url": "https://www.goindigo.in/"\n    },\n    "hotel": {\n      "options": [\n        {\n          "name": "The LaLiT New Delhi",\n          "address": "Barakhamba Road, Connaught Place, New Delhi, Delhi 110001",\n          "price": "₹6,000 per night",\n          "image_url": "https://www.lalit.com/images/hotels/new-delhi/gallery/lalit-new-delhi-exterior-view.jpg",\n          "geo_coordinates": [28.6328, 77.2184],\n          "rating": 4.5,\n          "description": "A luxurious 5-star hotel in the heart of Connaught Place, offering excellent amenities and services."\n        },\n        {\n          "name": "The Leela Palace New Delhi",\n          "address": "Chanakyapuri, New Delhi, Delhi 110021",\n          "price": "₹8,000 per night",\n          "image_url": "https://www.theleela.com/sites/default/files/styles/gallery_image/public/gallery/new_delhi/exterior_view.jpg",\n          "geo_coordinates": [28.5840, 77.1962],\n          "rating": 4.8,\n          "description": "A grand and opulent hotel known for its elegant architecture and world-class service."\n        }\n      ]\n    },\n    "activities": [\n      {\n        "placeName": "Red Fort",\n        "placeDetails": "A UNESCO World Heritage Site, the Red Fort is a historic Mughal-era fort that served as the main residence of the Mughal emperors.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Red_Fort_Delhi.jpg/1280px-Red_Fort_Delhi.jpg",\n        "geoCoordinates": [28.6562, 77.2339],\n        "ticketPricing": "₹50 per adult",\n        "timeToTravel": "30 minutes",\n        "dayPlan": {\n          "day": "Day 1",\n          "timeToVisit": "Morning",\n          "description": "Explore the fort\'s magnificent architecture and learn about its history."\n        }\n      },\n      {\n        "placeName": "Jama Masjid",\n        "placeDetails": "One of the largest mosques in India, Jama Masjid is a stunning architectural marvel with a capacity of 25,000 worshippers.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Jama_Masjid_Delhi_%28cropped%29.jpg/1280px-Jama_Masjid_Delhi_%28cropped%29.jpg",\n        "geoCoordinates": [28.6479, 77.2331],\n        "ticketPricing": "Free",\n        "timeToTravel": "10 minutes",\n        "dayPlan": {\n          "day": "Day 1",\n          "timeToVisit": "Afternoon",\n          "description": "Visit this iconic mosque and admire its intricate details."\n        }\n      },\n      {\n        "placeName": "Chandni Chowk",\n        "placeDetails": "A bustling market street famous for its street food, traditional shops, and vibrant atmosphere.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Chandni_Chowk%2C_Delhi%2C_India.jpg/1280px-Chandni_Chowk%2C_Delhi%2C_India.jpg",\n        "geoCoordinates": [28.6544, 77.2315],\n        "ticketPricing": "Free",\n        "timeToTravel": "5 minutes",\n        "dayPlan": {\n          "day": "Day 1",\n          "timeToVisit": "Evening",\n          "description": "Experience the hustle and bustle of Chandni Chowk and indulge in delicious street food."\n        }\n      },\n      {\n        "placeName": "Humayun\'s Tomb",\n        "placeDetails": "The tomb of the Mughal emperor Humayun, this architectural masterpiece is a UNESCO World Heritage Site.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Humayuns_Tomb_2010_04_06.jpg/1280px-Humayuns_Tomb_2010_04_06.jpg",\n        "geoCoordinates": [28.6104, 77.2198],\n        "ticketPricing": "₹50 per adult",\n        "timeToTravel": "45 minutes",\n        "dayPlan": {\n          "day": "Day 2",\n          "timeToVisit": "Morning",\n          "description": "Admire the tomb\'s intricate gardens and symmetrical architecture."\n        }\n      },\n      {\n        "placeName": "Lotus Temple",\n        "placeDetails": "A unique architectural wonder shaped like a lotus flower, the Lotus Temple is a Baháʼí House of Worship.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Lotus_Temple_04.jpg/1280px-Lotus_Temple_04.jpg",\n        "geoCoordinates": [28.5628, 77.2244],\n        "ticketPricing": "Free",\n        "timeToTravel": "30 minutes",\n        "dayPlan": {\n          "day": "Day 2",\n          "timeToVisit": "Afternoon",\n          "description": "Visit the temple for its peacefulness and unique architecture."\n        }\n      },\n      {\n        "placeName": "India Gate",\n        "placeDetails": "A war memorial dedicated to the Indian soldiers who died in World War I and the Third Anglo-Afghan War.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/India_Gate_Delhi_India.jpg/1280px-India_Gate_Delhi_India.jpg",\n        "geoCoordinates": [28.6129, 77.2295],\n        "ticketPricing": "Free",\n        "timeToTravel": "15 minutes",\n        "dayPlan": {\n          "day": "Day 2",\n          "timeToVisit": "Evening",\n          "description": "Enjoy a relaxing walk around the India Gate and admire the surrounding gardens."\n        }\n      },\n      {\n        "placeName": "National Museum",\n        "placeDetails": "A comprehensive museum showcasing India\'s rich art, history, and culture.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/National_Museum_New_Delhi.jpg/1280px-National_Museum_New_Delhi.jpg",\n        "geoCoordinates": [28.6211, 77.2184],\n        "ticketPricing": "₹50 per adult",\n        "timeToTravel": "10 minutes",\n        "dayPlan": {\n          "day": "Day 3",\n          "timeToVisit": "Morning",\n          "description": "Explore the vast collection of artifacts and learn about India\'s heritage."\n        }\n      },\n      {\n        "placeName": "Akshardham Temple",\n        "placeDetails": "A magnificent Hindu temple dedicated to Lord Swaminarayan, known for its intricate carvings and grand architecture.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Akshardham_Temple_1.jpg/1280px-Akshardham_Temple_1.jpg",\n        "geoCoordinates": [28.6132, 77.2618],\n        "ticketPricing": "Free",\n        "timeToTravel": "45 minutes",\n        "dayPlan": {\n          "day": "Day 3",\n          "timeToVisit": "Afternoon",\n          "description": "Witness the temple\'s grandeur and enjoy a cultural show."\n        }\n      },\n      {\n        "placeName": "Qutub Minar",\n        "placeDetails": "A UNESCO World Heritage Site, the Qutub Minar is the tallest brick minaret in the world.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Qutub_Minar_2010_04_05_2.jpg/1280px-Qutub_Minar_2010_04_05_2.jpg",\n        "geoCoordinates": [28.5833, 77.1741],\n        "ticketPricing": "₹50 per adult",\n        "timeToTravel": "1 hour",\n        "dayPlan": {\n          "day": "Day 4",\n          "timeToVisit": "Morning",\n          "description": "Admire the minaret\'s intricate details and learn about its history."\n        }\n      },\n      {\n        "placeName": "Mehrauli Archaeological Park",\n        "placeDetails": "A vast park containing numerous historical monuments and ruins, offering a glimpse into Delhi\'s past.",\n        "placeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Mehrauli_Archaeological_Park_2.jpg/1280px-Mehrauli_Archaeological_Park_2.jpg",\n        "geoCoordinates": [28.5792, 77.1837],\n        "ticketPricing": "₹50 per adult",\n        "timeToTravel": "15 minutes",\n        "dayPlan": {\n          "day": "Day 4",\n          "timeToVisit": "Afternoon",\n          "description": "Explore the park\'s historical sites and enjoy the peaceful atmosphere."\n        }\n      }\n    ]\n  }\n}\n```\n\n**Explanation:**\n\n* **trip:**  The main object containing trip details.\n* **destination:** "Delhi, India".\n* **duration:** 4 days and 3 nights.\n* **budget:** "Moderate".\n* **flight:** Information about your flight (details, price, booking URL).\n* **hotel:** Contains a list of hotel options (name, address, price, image URL, geo coordinates, rating, and description).\n* **activities:** A list of places to visit with details about each location. \n  * **placeName:** Name of the place.\n  * **placeDetails:** Description of the place.\n  * **placeImageUrl:** URL for an image of the place.\n  * **geoCoordinates:** Geographical coordinates.\n  * **ticketPricing:** Price of tickets.\n  * **timeToTravel:** Estimated travel time from your hotel.\n  * **dayPlan:** A daily itinerary for each location (day, time to visit, and description). \n\n**Important Notes:**\n\n* The provided hotel and flight prices are approximate and may vary.\n* The `timeToTravel` assumes you\'re using public transportation or a taxi. \n* This is a sample itinerary. Feel free to customize it based on your interests and preferences.\n* Make sure to research the current ticket prices and opening hours for the attractions. \n\nRemember to always check for any entry restrictions or COVID-19 related guidelines before your trip. \n',
+        },
+      ],
+    },
+  ],
+});
+
+// const result = await chatSession.sendMessage("INSERT_INPUT_HERE");
+// console.log(result.response.text());
