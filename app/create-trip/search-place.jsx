@@ -3,8 +3,12 @@ import React, { useEffect } from "react";
 import { useNavigation, useRouter } from "expo-router";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useTrip } from "../../context/CreateTripProvider";
+import Constants from 'expo-constants';
 
 export default function SearchPlace() {
+
+  const GOOGLE_MAPS_API_KEY = Constants.expoConfig.extra.googleApiKey;
+
   const router = useRouter();
   const navigation = useNavigation();
   const { tripData, setTripData } = useTrip();
@@ -15,6 +19,25 @@ export default function SearchPlace() {
       headerTitle: "Search",
     });
   }, []);
+
+
+  const handlePlaceSelect = async (data, details) => {
+    // try {
+      setTripData({
+        locationInfo: {
+          name: data.description,
+          coordinates: details?.geometry.location,
+          photoRef: details?.photos[0]?.photo_reference,
+          url: details?.url,
+        },
+      });
+
+      router.push("/create-trip/select-traveler");
+    // } catch (error) {
+    //   console.error("Error selecting place:", error);
+    // }
+  };
+
 
   return (
     <View
@@ -27,29 +50,15 @@ export default function SearchPlace() {
     >
       <GooglePlacesAutocomplete
         placeholder="Search place"
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          // console.log(data, details);
-          // console.log(data.description);
-          // console.log(details?.geometry.location);
-          // console.log(details?.photos[0]?.photo_reference);
-          // console.log(details?.url);
-          setTripData({
-            locationInfo: {
-              name: data.description,
-              coordinates: details?.geometry.location,
-              photoRef: details?.photos[0]?.photo_reference,
-              url: details?.url,
-            },
-          });
+        onPress={handlePlaceSelect}
 
-          router.push("/create-trip/select-traveler");
-        }}
         query={{
-          key: process.env.EXPO_PUBLIC_GOOGLE_MAP_KEY,
+          // key: "AIzaSyBjMmeepu0rrqUkzCWJmGVPE7ODKKN3rwQ",
+          key: GOOGLE_MAPS_API_KEY,
+          // key: "AIzaSyAZWv8qvfyDIArGtjkFP-xeaCmErHMwjRI",
           language: "en",
         }}
-        fetchDetails={true} // This fetches the full details of the place
+        // fetchDetails={true} // This fetches the full details of the place
         styles={{
           textInputContainer: {
             backgroundColor: "rgba(0,0,0,0)",
