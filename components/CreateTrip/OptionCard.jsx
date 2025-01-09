@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
-export default function OptionCard({ option, selectTraveler, selectBudget }) {
+export default function OptionCard({ option, /*selectTraveler*/, selectBudget }) {
   return (
     <View
       style={[
@@ -12,7 +12,7 @@ export default function OptionCard({ option, selectTraveler, selectBudget }) {
           backgroundColor: "#f2f2f2",
           borderRadius: 15,
         },
-        selectTraveler?.id === option?.id && { borderWidth: 3 },
+        // selectTraveler?.id === option?.id && { borderWidth: 3 },
         selectBudget?.id === option?.id && { borderWidth: 3 },
       ]}
     >
